@@ -14,6 +14,17 @@ class Player(CircleShape):
     def draw(self, screen):
         pygame.draw.polygon(screen, "white", self.triangle(), 2)
 
+        if self.shoot_timer > 0:
+            cooldown_fraction = 1 - (self.shoot_timer / PLAYER_SHOOT_COOLDOWN)
+        else:
+            cooldown_fraction = 1
+
+        bar_width = COOLDOWN_BAR_WIDTH * cooldown_fraction
+        bar_x = self.position.x - COOLDOWN_BAR_WIDTH / 2
+        bar_y = self.position.y + self.radius + 10  # just below the player
+
+        pygame.draw.rect(screen, "white", (bar_x, bar_y, bar_width, COOLDOWN_BAR_HEIGHT), 1)
+
     def rotate(self, dt):
         self.rotation += PLAYER_TURN_SPEED * dt
 
